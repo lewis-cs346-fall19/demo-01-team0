@@ -9,11 +9,14 @@ def main():
 	while(True):
 		try:
 			msg = connectedSock.recv(1024).decode()
+			message = "Here's the data: " + msg + " END"
+			connectedSock.sendall(message.encode())
 		except ConnectionAbortedError:
 			connectedSock.close()
 			break
-		message = "Here's the data: " + msg + " END"
-		connectedSock.sendall(message.encode())
+		except BrokenPipeError:
+			connectedSock.close()
+			break
 
 
 main()
